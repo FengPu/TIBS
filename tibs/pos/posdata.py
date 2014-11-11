@@ -33,42 +33,58 @@
 #
 # -*-
 
+import sys
 class PosData:
 
-	def __init__(self, name, id, desc, acc):
-		pass
+    def __init__(self, name, did, desc, acc):
+        self.acc = acc
+        self.desc = desc
+        self.name = name
+        self.id = did
+        self.__set_accountability()
 
     def get_id(self):
-        pass
+        return self.id
 
     def get_name(self):
-    	pass
+        return self.name
 
     def get_description(self):
-    	pass
-
+        return self.description
 
 	def get_accountability(self):
-		pass
+        acc = {}
+        acc['name'] = self.acc['name']
+        acc['description'] = self.acc['description']
+        return acc
+
+    def __set_accountability(self):
+        sys.path.append(self.acc["path"])
 
 	def get_content(self):
 		content = {}
 
-		if (self.__check_accountiability()):
-			content['status'] = True
-			content['data'] = 'temporary access path or \
-		                       serialized content'
-		else:
+        if (self.__check_accountiability()):
+		    content['status'] = True
+		    content['data'] = 'temporary access path or serialized content'
+        else:
             content['status'] = False
-		    content['data'] = ''
-
-		return content 
+            content['data'] = ''
+        return content 
 
 	def __check_accountiability(self):
-		
-		self.__log_accountiability()
-		#if sucess return True, else return False
-		return True
+        #if sucess return True, else return False
+        #example_path
+        #  = test_root_dir / publisher_1 / topicA / acc_fun / email_certification.py
+        package = self.acc['path'].split('/')[-1].split('.')[0]
+        acc_pkg = __import__(package)
+        acc = acc_pkg.Accountiabilty() #convention: class name = Accountiability
+        result = acc.run_accountiability()
+		self.__log_accountiability(result)
+		if result['success'] = True: 
+            return True
+		else:
+            return False
 
 	def __log_accountiability(self):
 		pass
