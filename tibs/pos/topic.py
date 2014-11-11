@@ -39,12 +39,13 @@ import json
 class Topic:
 
     def __init__(self, tid, tname, topic_version, root, t_data):
+        print "topic_name:" + tname
         self.id = tid
         self.name = tname
         self.version = topic_version
         self.root = root
         self.data_set = t_data
-        self.data_profile = self.__read_metadata()
+        #self.data_profile = self.__read_metadata()
 
 
     def get_publisher(self):
@@ -53,7 +54,7 @@ class Topic:
     def get_id(self):
         return self.id
 
-   
+
     #next iteration
 
     def get_name(self):
@@ -91,7 +92,7 @@ class Topic:
         data_object_names = data['object_names']
         data_object_descriptions = data['object_descriptions']
 
-    def __read_metadata(self):
+    def read_metadata(self, root):
         #TODO:
         #  Error checking:
         #                1. no metadata
@@ -101,7 +102,7 @@ class Topic:
         if self.__err_detector_no_metadata():
             self.__err_handler_no_metadata()
 
-        path = os.path.join(self.root, "data.metadata")
+        path = os.path.join(root, "data.metadata")
         json_data=open(path)
         metadata = json.load(json_data)
 
