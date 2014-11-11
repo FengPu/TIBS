@@ -34,6 +34,8 @@
 # -*-
 
 from publisher import Publisher
+from topic import Topic
+from posdata import PosData
 import os
 import json
 
@@ -138,7 +140,7 @@ class Pos:
                 print 'found ' + pub_name + '\n---\n'
             else:
                 print 'not found publisher'
-        print current_pos
+        self.pos_builder(current_pos)
 
     def __scan_pub_path(self, pub_layer, pub_topics_list):
 
@@ -301,4 +303,27 @@ class Pos:
         if len(file_list) > 0:
             return True
         return False
+
+    def pos_builder(self, current_pos):
+        print 'begin'
+        for pub in current_pos["pos"]:
+            pub_obj = Publisher(pub["pub_id"], pub["pub_name"], pub["pub_topics"])
+            self.__add_publisher(pub_obj)
+            for topic in pub["pub_topics"]:
+                topic_obj = Topic(topic["id"], topic["name"], topic["version"], topic["metadata_path"], topic["data_list"])
+                for data in topic["data_list"]:
+                    metadata = topic_obj.read_metadata(topic["metadata_path"])
+                    acc = self.acc_build(metadata, topic["metadata_path"])
+                    data_obj = PosData(metadata["data_name"], metadata["data_id"], metadata["data_desc"],
+                               acc)
+
+            #for publisher
+        print 'end'
+
+    def acc_build(self, metadata, acc_loc):
+        acc = {}
+        acc["name"] = metadata["accountability_name"]
+        acc["desc"] = metadata["accountability_description"]
+        acc["path"] = os.path.join(acc_loc, "acc/"+acc["name"])
+        return acc
 

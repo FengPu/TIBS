@@ -37,12 +37,13 @@ from topic import Topic
 class Publisher:
 
     def __init__(self, pid, pname, topic_list):
+        print "pub_name:" + pname
         self.id = pid
         self.name = pname
         self.topics=[]
         self.require_topics = topic_list
 
-        self.add_topic()
+        #self.add_topic()
         #self.topic_list =
 
     def get_id(self):

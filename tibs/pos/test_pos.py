@@ -6,12 +6,12 @@ from pos import Pos
 # TODO: initialize a new Pos object
 #       and test if it is initialized correctly
 
-test_pos = Pos('./test_root_dir/')
+test_pos = Pos('./test_root_dir2/')
 
 #TODO: replace print to assert
 
 publishers = test_pos.get_publishers()
-print len(publishers) # 3 for current test fixture
+'''print len(publishers) # 3 for current test fixture
 
 
 for publisher in publishers:
@@ -22,4 +22,4 @@ for publisher in publishers:
     for topic in topics:
         print topic.get_name()
         print topic.get_version()
-        print topic.get_data_profile()
+        print topic.get_data_profile()'''

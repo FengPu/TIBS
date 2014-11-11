@@ -24,7 +24,7 @@
 #
 # Author:
 #
-#    Project Manager : Feng-Pu Yabg 
+#    Project Manager : Feng-Pu Yabg
 #    Core Team Member: Bai-Small
 #
 # Project:
@@ -36,17 +36,20 @@
 class PosData:
 
 	def __init__(self, name, id, desc, acc):
+		print "name is:" + name
+		print "id is:" + id
+		print "desc is:" + desc
+		print acc
+
+
+	def get_id(self):
 		pass
 
-    def get_id(self):
-        pass
+	def get_name(self):
+		pass
 
-    def get_name(self):
-    	pass
-
-    def get_description(self):
-    	pass
-
+	def get_description(self):
+		pass
 
 	def get_accountability(self):
 		pass
@@ -59,17 +62,16 @@ class PosData:
 			content['data'] = 'temporary access path or \
 		                       serialized content'
 		else:
-            content['status'] = False
-		    content['data'] = ''
+			content['status'] = False
+			content['data'] = ''
 
-		return content 
+		return content
 
 	def __check_accountiability(self):
-		
+
 		self.__log_accountiability()
 		#if sucess return True, else return False
 		return True
 
 	def __log_accountiability(self):
 		pass
-		
