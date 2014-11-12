@@ -294,7 +294,7 @@ class Pos:
     def __is_data_existed(self, data_name, data_info):
         result = False
         if data_name == data_info['data_name']:
-            return True
+            return True    
         return False
 
     def __is_file_existed(self, file_name, file_info):
