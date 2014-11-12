@@ -62,7 +62,7 @@ class Pos:
 
     def __read_metadata(self):
 
-        '''The function read pos metadata and
+        '''This function read pos metadata and
         get subscription dataset detail.
 
         :returns: array<str> -- the array of pos subscriptions.
@@ -88,7 +88,7 @@ class Pos:
         # publisher_data[topic_id] = topic_data (topicObj)
         # topic_data[data_id] = data (dataobj)
 
-        '''The function walk the entire directory tree
+        '''This function walk the entire directory tree
         and use pos dictionary to store its structure.
         Also, it will find all publishers and use each of
         them to create new object.
@@ -144,7 +144,7 @@ class Pos:
 
     def __scan_pub_path(self, pub_layer, pub_topics_list):
 
-        '''The function scan the publisher layer
+        '''This function scan the publisher layer
         and use array to append each topic object.
 
         :param pub_layer: str -- The path of publisher.
@@ -169,7 +169,7 @@ class Pos:
               },
               .
               .
-           ]
+            ]
         '''
         current_topics = []
         topic_index = os.walk(pub_layer).next()[1]
@@ -192,7 +192,7 @@ class Pos:
         return current_topics
 
     def __scan_topic_path(self, topic_layer, data_list):
-        '''The function scan the topic layer
+        '''This function scan the topic layer
         and use array to append each data object.
 
         :param topic_layer: str -- The path of topic.
@@ -211,7 +211,7 @@ class Pos:
               },
               .
               .
-           ]
+            ]
         '''
         current_data = []
         existing_data = os.walk(topic_layer).next()[1]
@@ -231,7 +231,7 @@ class Pos:
         return current_data
 
     def __scan_data_path(self, data_layer, file_list):
-        '''The function scan the data layer
+        '''This function scan the data layer
         and use array to append each file object.
 
         :param data_layer: str -- The path of data.
@@ -248,7 +248,7 @@ class Pos:
               },
               .
               .
-           ]
+            ]
         '''
         current_files =[]
         for root, dirs, files in os.walk(data_layer):
@@ -264,7 +264,7 @@ class Pos:
         return current_files
 
     def __add_publisher(self, found_publisher):
-        '''The function scan the data layer
+        '''This function scan the data layer
         and use array to append each file object.
 
         :returns: array<str> -- the array of file.
@@ -275,6 +275,12 @@ class Pos:
             self.publishers.append(found_publisher)
 
     def get_publishers(self):
+        '''The function let user to know who are publishers 
+        that POS have subscribed.
+
+        :returns: array<str> -- the publisher list.
+
+        '''
         return self.publishers
 
     def __is_publisher_existed(self, pub_name, r_pos_info):
@@ -294,7 +300,7 @@ class Pos:
     def __is_data_existed(self, data_name, data_info):
         result = False
         if data_name == data_info['data_name']:
-            return True    
+            return True
         return False
 
     def __is_file_existed(self, file_name, file_info):
@@ -305,6 +311,12 @@ class Pos:
         return False
 
     def pos_builder(self, current_pos):
+        '''This function begin to declare new POS's sub-objects
+        like publisher, topic and data.
+
+        :param current_pos: dictionary -- The dictionary tree of current POS.
+        '''
+
         print 'begin'
         for pub in current_pos["pos"]:
             pub_obj = Publisher(pub["pub_id"], pub["pub_name"], pub["pub_topics"])
@@ -313,17 +325,23 @@ class Pos:
                 topic_obj = Topic(topic["id"], topic["name"], topic["version"], topic["metadata_path"], topic["data_list"])
                 for data in topic["data_list"]:
                     metadata = topic_obj.read_metadata(topic["metadata_path"])
-                    acc = self.acc_build(metadata, topic["metadata_path"])
+                    acc_folder = os.path.join(acc_loc, "acc")
+                    acc = self.acc_build(metadata, acc_folder)
                     data_obj = PosData(metadata["data_name"], metadata["data_id"], metadata["data_desc"],
                                acc)
-
-            #for publisher
         print 'end'
 
-    def acc_build(self, metadata, acc_loc):
+    def acc_build(self, metadata, acc_folder):
+        '''This function use a dictionary to store acc properties
+        like its name, description and path.
+
+        :param metadata: dictionary -- The data about topic data.
+        :param acc_folder: string -- The location of accountability folder.
+        :returns: dictionary -- the detail of accountability.
+        '''
         acc = {}
         acc["name"] = metadata["accountability_name"]
         acc["desc"] = metadata["accountability_description"]
-        acc["path"] = os.path.join(acc_loc, "acc/"+acc["name"])
+        acc["path"] = os.path.join(acc_folder, acc["name"])
         return acc
 
