@@ -47,7 +47,6 @@ class Topic:
         self.data_set = t_data
         #self.data_profile = self.__read_metadata()
 
-
     def get_publisher(self):
         pass
 
@@ -93,6 +92,12 @@ class Topic:
         data_object_descriptions = data['object_descriptions']
 
     def read_metadata(self, root):
+        ''' This function read metadata content if it isn't missing 
+        or is not mismatch.
+
+        :param root: string -- the metadata location
+        :returns: dictionary -- the metadata content.
+        '''
         #TODO:
         #  Error checking:
         #                1. no metadata
