@@ -35,24 +35,29 @@
 
 class PosData:
 
-	def __init__(self, name, id, desc, acc):
-		print "name is:" + name
-		print "id is:" + id
+	def __init__(self, data_name, data_id, desc, acc):
+		print "name is:" + data_name
+		print "id is:" + data_id
 		print "desc is:" + desc
 		print acc
+		
+		self.name = data_name
+		self.id = data_id
+		self.desc = desc
+		self.acc = acc
 
 
 	def get_id(self):
-		pass
+		return self.id
 
 	def get_name(self):
-		pass
+		return self.name
 
 	def get_description(self):
-		pass
+		return self.desc
 
 	def get_accountability(self):
-		pass
+		return self.acc
 
 	def get_content(self):
 		content = {}

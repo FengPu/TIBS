@@ -110,7 +110,7 @@ class Pos:
               .
               .
             ]
-           ]
+           }
         '''
 
         metadata = self.__read_metadata()
@@ -134,8 +134,8 @@ class Pos:
                 })
 
                 #declare new publisher object
-                pub_abc = Publisher(pub_id, pub_name, current_topics)
-                self.__add_publisher(pub_abc)
+                #pub_abc = Publisher(pub_id, pub_name, current_topics)
+                #self.__add_publisher(pub_abc)
 
                 print 'found ' + pub_name + '\n---\n'
             else:
@@ -315,33 +315,18 @@ class Pos:
         like publisher, topic and data.
 
         :param current_pos: dictionary -- The dictionary tree of current POS.
+
+        Today the sensor technologys are common to be used such  
         '''
 
-        print 'begin'
         for pub in current_pos["pos"]:
             pub_obj = Publisher(pub["pub_id"], pub["pub_name"], pub["pub_topics"])
             self.__add_publisher(pub_obj)
-            for topic in pub["pub_topics"]:
+            '''for topic in pub["pub_topics"]:
                 topic_obj = Topic(topic["id"], topic["name"], topic["version"], topic["metadata_path"], topic["data_list"])
                 for data in topic["data_list"]:
                     metadata = topic_obj.read_metadata(topic["metadata_path"])
-                    acc_folder = os.path.join(acc_loc, "acc")
+                    acc_folder = os.path.join(topic["metadata_path"], "acc")
                     acc = self.acc_build(metadata, acc_folder)
                     data_obj = PosData(metadata["data_name"], metadata["data_id"], metadata["data_desc"],
-                               acc)
-        print 'end'
-
-    def acc_build(self, metadata, acc_folder):
-        '''This function use a dictionary to store acc properties
-        like its name, description and path.
-
-        :param metadata: dictionary -- The data about topic data.
-        :param acc_folder: string -- The location of accountability folder.
-        :returns: dictionary -- the detail of accountability.
-        '''
-        acc = {}
-        acc["name"] = metadata["accountability_name"]
-        acc["desc"] = metadata["accountability_description"]
-        acc["path"] = os.path.join(acc_folder, acc["name"])
-        return acc
-
+                               acc)'''

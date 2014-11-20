@@ -33,6 +33,7 @@
 #
 # -*-
 
+from posdata import PosData
 import os
 import json
 
@@ -44,15 +45,17 @@ class Topic:
         self.name = tname
         self.version = topic_version
         self.root = root
+
+        self.data_list = []
         self.data_set = t_data
-        #self.data_profile = self.__read_metadata()
+
+        self.add_data()
 
     def get_publisher(self):
         pass
 
     def get_id(self):
         return self.id
-
 
     #next iteration
 
@@ -65,7 +68,7 @@ class Topic:
     def get_version(self):
         return self.version
 
-    def get_data_profile(self):
+    def add_data(self):
         # 1. data description (from metadata)
         # 2. data_id (from metadata)
         # 3. data_name
@@ -73,23 +76,31 @@ class Topic:
         # 5. accountability_description (from metadata)
         #
         # TODO: read metadata and write self.data_profile
-        return self.data_profile
 
+        for data in self.data_set:
+            metadata = self.read_metadata(self.root)
+            acc_folder = os.path.join(self.root, "acc")
+            acc = self.acc_build(metadata, acc_folder)
+            data_obj = PosData(metadata["data_name"], metadata["data_id"], metadata["data_desc"],acc)
+            if not data_obj in self.data_list:
+                self.data_list.append(data_obj)
 
-    def get_data(data_id):
+    def get_data(self):
         # 1. check data accountability
         # 2. delegate to accountability function (provided by publisher)
         # 3. if success, return data and save accountability record
         #     else, return nothing and save accountability record
 
-        data = self.data_profile[data_id]
+        '''data = self.data_profile[data_id]
         #data-level
         data_acc_desc = data['accountability_description']
         data_acc_name = data['accountability_name']
         data_description = data['description']
         #object-level
         data_object_names = data['object_names']
-        data_object_descriptions = data['object_descriptions']
+        data_object_descriptions = data['object_descriptions']'''
+
+        return self.data_list
 
     def read_metadata(self, root):
         ''' This function read metadata content if it isn't missing 
@@ -108,13 +119,27 @@ class Topic:
             self.__err_handler_no_metadata()
 
         path = os.path.join(root, "data.metadata")
-        json_data=open(path)
+        json_data = open(path)
         metadata = json.load(json_data)
 
         return metadata
 
         #TODO: read metadata
         #      ...
+
+    def acc_build(self, metadata, acc_folder):
+        '''This function use a dictionary to store acc properties
+        like its name, description and path.
+
+        :param metadata: dictionary -- The data about topic data.
+        :param acc_folder: string -- The location of accountability folder.
+        :returns: dictionary -- the detail of accountability.
+        '''
+        acc = {}
+        acc["name"] = metadata["accountability_name"]
+        acc["desc"] = metadata["accountability_description"]
+        acc["path"] = os.path.join(acc_folder, acc["name"])
+        return acc
 
     def __err_detector_metadata_data_mismatch(self):
         pass

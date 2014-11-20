@@ -43,7 +43,8 @@ class Publisher:
         self.topics=[]
         self.require_topics = topic_list
 
-        #self.add_topic()
+
+        self.add_topic()
         #self.topic_list =
 
     def get_id(self):
@@ -62,5 +63,3 @@ class Publisher:
                 topic["metadata_path"], topic["data_list"])
             if not topic_abc in self.topics:
                 self.topics.append(topic_abc)
-        #self.topics[topic.get_topic_id] = topic
-
